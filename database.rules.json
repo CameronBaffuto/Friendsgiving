@@ -1,0 +1,41 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "events": {
+      "$event": {
+        "entries": {
+          ".read": "root.child('access').child($event).val() === true",
+          "$entry": {
+            ".write": "root.child('access').child($event).val() === true",
+            ".validate": "newData.hasChildren(['name', 'dish', 'category', 'note', 'createdAt', 'updatedAt', 'revision'])",
+            "name": {
+              ".validate": "newData.isString() && newData.val().length <= 60 && newData.val().matches(/.*[^ ].*/)"
+            },
+            "dish": {
+              ".validate": "newData.isString() && newData.val().length <= 100 && newData.val().matches(/.*[^ ].*/)"
+            },
+            "category": {
+              ".validate": "newData.val() === 'mains' || newData.val() === 'sides' || newData.val() === 'appetizers' || newData.val() === 'desserts' || newData.val() === 'drinks'"
+            },
+            "note": {
+              ".validate": "newData.isString() && newData.val().length <= 300"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber() && ((!data.exists() && newData.val() === now) || (data.exists() && newData.val() === data.val()))"
+            },
+            "updatedAt": {
+              ".validate": "newData.isNumber() && newData.val() === now"
+            },
+            "revision": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-f0-9-]{36}$/)"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "friendsgivingmas",
+  "version": "1.0.0",
+  "description": "A private, real-time food signup for Friendsgivingmas",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "node scripts/check-config.mjs && tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "new-event": "node scripts/new-event.mjs",
+    "test:rules": "firebase emulators:exec --only database --project demo-friendsgivingmas \"node --test tests/rules.test.mjs\"",
+    "test": "vitest run"
+  },
+  "type": "module",
+  "dependencies": {
+    "firebase": "^13.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "firebase-tools": "^14.27.0",
+    "jsdom": "^30.1.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  },
+  "private": true
+}
