@@ -43,7 +43,8 @@ export function App({ store, issue, demo }: {
     return <main className="page">
     <header className="hero">
       <Illustration name="orange-ribbon" className="hero-orange"/><Illustration name="candle" className="hero-candle"/>
-      <p className="hero-note">A little bit Thanksgiving,<br />a little bit Christmas,<br />a whole lot of us.</p>
+      <p className="hero-note">A little bit Thanksgiving,<br />a little bit Christmas,<br />a whole lot of fun</p>
+      <h1>Baffuto</h1>
       <h1>Friendsgiving</h1>
       <img className="hero-bow" src="/assets/decorations/bow-divider.png" alt=""/>
       <p className="tagline">Good food. Better company.</p>
@@ -54,7 +55,7 @@ export function App({ store, issue, demo }: {
     <section className="feast" aria-labelledby="feast-heading"><div className="feast-heading"><h2 id="feast-heading">The Feast</h2><span className="dish-total">{loaded ? `${dishes.length} ${dishes.length === 1 ? 'dish' : 'dishes'}` : 'a place for everyone'}</span></div>
       {!store || failed ? <div className="page-message" role="alert"><h3>{failed ? 'The menu needs a moment' : 'You’re invited to the feast'}</h3><p>{failed ? 'We couldn’t open this menu. Check your connection and the full invitation link, then try again.' : issue}</p>{failed ? <button className="secondary-button" onClick={() => location.reload()}>Try again</button> : import.meta.env.DEV ? <a className="secondary-button" href="/?demo">Preview the menu</a> : null}</div> : !loaded ? <p className="loading-copy" role="status">Setting the table. Getting everyone’s dishes…</p> : <><FoodList dishes={dishes} onOpen={dish => setSurface({ kind: 'details', dish })}/><p className={`connection ${connected ? '' : 'offline'}`} role="status">{connected ? demo ? '' : 'The menu updates live' : 'Offline · showing the last update. Reconnect to save.'}</p></>}
     </section>
-    <footer className="closing"><img src="/assets/decorations/leaf-divider.png" alt=""/><p>There’s always room at our table.</p><span>Made with love. Shared with friends.</span></footer>
+    <footer className="closing"><img src="/assets/decorations/leaf-divider.png" alt=""/><p>There’s always room at our table.</p><span>Made with love 2026</span></footer>
     <div className={`toast ${notice ? 'visible' : ''}`} role="status" aria-live="polite">{notice}</div>
     {surface?.kind === 'add' || surface?.kind === 'edit' ? store ? <DishForm key={surface.kind === 'edit' ? surface.dish.id : 'new'} store={store} dish={surface.kind === 'edit' ? surface.dish : undefined} dishes={dishes} connected={connected && !failed} onClose={() => setSurface(null)} onLatest={reopen} onSaved={(dish, editing) => { if (editing) {
         setSurface(null);
