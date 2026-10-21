@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { getFirebaseApp } from './firebase';
 import { connectDatabaseEmulator, getDatabase, onValue, ref, runTransaction, serverTimestamp, set } from 'firebase/database';
 import type { Dish, DishInput } from './model';
 
@@ -11,11 +11,9 @@ export type Store = {
 
 export function firebaseStore(token: string): Store | null {
   const env = import.meta.env;
-  if (!env.VITE_FIREBASE_PROJECT_ID || !env.VITE_FIREBASE_DATABASE_URL || !env.VITE_FIREBASE_API_KEY || !env.VITE_FIREBASE_APP_ID) return null;
-  const db = getDatabase(initializeApp({
-    apiKey: env.VITE_FIREBASE_API_KEY, projectId: env.VITE_FIREBASE_PROJECT_ID,
-    databaseURL: env.VITE_FIREBASE_DATABASE_URL, appId: env.VITE_FIREBASE_APP_ID,
-  }));
+  const app = getFirebaseApp();
+  if (!app) return null;
+  const db = getDatabase(app);
   if (import.meta.env.DEV && env.VITE_USE_EMULATORS === 'true') connectDatabaseEmulator(db, '127.0.0.1', 9000);
   const base = `events/${token}/entries`;
   return {

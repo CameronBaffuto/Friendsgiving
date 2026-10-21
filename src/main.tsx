@@ -17,3 +17,11 @@ else if (token) {
 }
 root.render(<App store={store} issue={issue} />);
 window.addEventListener('hashchange', () => location.reload());
+
+// Keep local development and Hosting preview channels out of visitor counts.
+// Analytics is optional and must never delay rendering or database startup.
+if (import.meta.env.PROD && ['friendsgiving-dac7b.web.app', 'friendsgiving-dac7b.firebaseapp.com'].includes(location.hostname)) {
+  void import('./analytics').then(({ startAnalytics }) => startAnalytics()).catch(() => {
+    // Tracking blockers and unsupported browsers must not affect the invitation.
+  });
+}
