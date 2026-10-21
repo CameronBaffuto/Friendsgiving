@@ -13,6 +13,33 @@ npm run dev
 
 Open `http://localhost:5173/?demo` for an empty local development menu. It saves only to this browser’s local storage and synchronizes between tabs on the same browser. This development-only mode never writes to Firebase. Clear the `friendsgivingmas:demo:v3` local storage key to reset it. The live menu uses Firebase and requires the full event invitation link.
 
+## Updating the live app
+
+After editing code or images, run these commands from the project folder:
+
+```sh
+REQUIRE_FIREBASE_CONFIG=true npm run build
+npx firebase deploy --only hosting --project friendsgiving-dac7b
+```
+
+This uses the Firebase web configuration in `.env.local` (ignored by Git). If Firebase asks you to sign in, run `npx firebase login`, then retry the deployment. Refresh the site on your phone after deployment. Keep using the full private invitation link, including `#event=TOKEN`.
+
+Save your changes to GitHub separately:
+
+```sh
+git add .
+git commit -m "Update Friendsgiving"
+git push origin main
+```
+
+**Pushing to GitHub does not automatically deploy the site.** GitHub runs the build check; the manual **Deploy hosting** action requires the Firebase variables and deployment secret described below before it can deploy.
+
+If you change `database.rules.json`, deploy the rules as well:
+
+```sh
+npx firebase deploy --only database --project friendsgiving-dac7b
+```
+
 ## Firebase setup
 
 1. Create a Firebase project on the **Spark** plan. Use **Firebase Hosting**, not App Hosting. Enable **Realtime Database** in locked mode and register a Web app. No Authentication, Functions, Analytics, or billing upgrade is required for this implementation.
