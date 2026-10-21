@@ -74,6 +74,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible 
   outline-offset:4px;
 }
 
+/* Modal titles receive programmatic focus without acting as controls. */
+.sheet h2[tabindex="-1"]:focus {
+  outline:none;
+}
+
 h1,h2,h3,p {
   margin:0;
 }
