@@ -1,4 +1,4 @@
-# Friendsgivingmas food signup
+# Friendsgiving food signup
 
 A small Vite + React + TypeScript app on Firebase Hosting and Realtime Database. One page: see dishes by category, add yours, edit, or remove. No guest accounts. Updates arrive live. A save confirmation means Firebase acknowledged the write.
 
@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open `http://localhost:5173/?demo` to try the interface with clearly labeled sample dishes. This preview is in-memory, resets on reload, and is removed from production builds. The production list starts empty.
+Open `http://localhost:5173/?demo` for an empty local development menu. It saves only to this browser’s local storage and synchronizes between tabs on the same browser. This development-only mode never writes to Firebase. Clear the `friendsgivingmas:demo:v3` local storage key to reset it. The live menu uses Firebase and requires the full event invitation link.
 
 ## Firebase setup
 
@@ -51,7 +51,7 @@ cd Friendsgiving
 npm ci
 ```
 
-CI builds the app and checks database security rules for pushes and pull requests. It uses the local Firebase emulator, never your production database.
+CI type-checks and builds the app for pushes and pull requests. Automated test infrastructure is intentionally omitted.
 
 The included **Deploy hosting** workflow is manually triggered from GitHub Actions. Configure repository variables `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_DATABASE_URL`, and `VITE_FIREBASE_APP_ID`. Add the deployment service-account JSON as the `FIREBASE_SERVICE_ACCOUNT` **secret**, not a variable or committed file. The Firebase CLI's `firebase init hosting:github` can provision the hosting deployment identity and credentials; keep the existing `dist` hosting directory and SPA rewrite. It may create extra workflows, which you can remove if using the supplied manual workflow. If it creates a project-specific secret name, update `deploy.yml` to reference that name.
 
@@ -76,17 +76,17 @@ Each event's list is ordered by original creation time within fixed categories. 
 
 Run `npm run new-event -- https://YOUR_PROJECT_ID.web.app` again and enable its new token. That gives the new year an empty food list and keeps prior events intact. No code changes or new deployment are necessary. Disable last year's link if you no longer want it editable.
 
-## Checks
+## Local checks and manual verification
 
 ```sh
+npm run typecheck
 npm run build
-npm test
-npm run test:rules
+npm run dev
 ```
 
-Component tests cover confirmed saves, failed-save input retention, duplicate submission, offline handling, remembered names, category shortcuts, and removal confirmation. These run in jsdom; they do not replace a real-browser layout and accessibility check.
+Open `http://localhost:5173/?demo`. At 375px, 390px, and desktop widths, inspect the hero and all five menu categories. Add a dish with a deliberate category selection, open its details, edit it, and cancel then confirm removal. Check the success sheet, remembered name, and a duplicate-name warning. Reload to check demo persistence and open a second tab to check demo updates and revision conflicts. Use Tab, Shift+Tab, Escape, and the close button in each sheet. Test a short viewport and mobile keyboard with the save action visible.
 
-Rule tests require Java (Java 21 recommended) and the Realtime Database emulator. They cover guest CRUD, denied enumeration, unknown/revoked links, validation, and immutable creation timestamps. The Firebase CLI downloads the emulator on first use.
+For live verification, copy `.env.example` to `.env.local` and supply the remaining Firebase web app API key and app ID. The project ID and database URL are prefilled for `friendsgiving-dac7b`. Open an enabled `#event=TOKEN` invitation in two browsers; verify add, edit, delete, reload persistence, concurrent edits, and offline/failed-save input retention. Demo behavior does not verify Firebase connectivity or rules.
 
 To run the UI against a local emulator, use Firebase project `demo-friendsgivingmas`, set `VITE_USE_EMULATORS=true` in `.env.local`, fill the web config using that demo project and a local database URL, and start `npx firebase emulators:start --only database --project demo-friendsgivingmas`. Seed an enabled token through the emulator admin interface. Emulator mode is gated on Vite development mode and cannot activate in a production build.
 
