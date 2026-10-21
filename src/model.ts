@@ -1,6 +1,9 @@
 export const categories = [
-  ['appetizers', 'Appetizers'], ['mains', 'Mains'], ['sides', 'Sides'],
-  ['desserts', 'Desserts'], ['drinks', 'Drinks & extras'],
+  ['appetizers', 'Appetizers'],
+  ['mains', 'Mains'],
+  ['sides', 'Sides'],
+  ['desserts', 'Desserts'],
+  ['drinks', 'Drinks & extras'],
 ] as const;
 
 export type Category = typeof categories[number][0];

@@ -203,15 +203,6 @@ img {
   z-index:1;
 }
 
-.hero-greenery {
-  position:absolute;
-  bottom:-20px;
-  left:-18px;
-  width:110px;
-  transform:rotate(12deg);
-  z-index:-1;
-}
-
 .gingham {
   height:51px;
   background:url('/assets/decorations/gingham-strip.png') center/390px 70px repeat-x;
@@ -843,12 +834,6 @@ img {
     right:-14px;
     top:26px;
     transform:rotate(8deg);
-  }
-  .hero-greenery {
-    width:156px;
-    left:-24px;
-    bottom:-26px;
-    transform:rotate(18deg);
   }
   .tagline {
     font-size:12px;
