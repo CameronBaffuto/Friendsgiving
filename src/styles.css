@@ -481,11 +481,11 @@ img {
 
 .sheet-heading .illustration {
   position:absolute;
-  left:13px;
-  top:22px;
-  height:40px;
-  width:52px;
-  transform:rotate(-12deg);
+  left:7px;
+  top:9px;
+  height:56px;
+  width:70px;
+  transform:rotate(-18deg);
 }
 
 .sheet-heading h2 {

@@ -88,7 +88,7 @@ The workflow deploys **Hosting only**. Deploy rules once before inviting guests,
 
 The main “Add a little something” button opens an empty category selection. Tapping a category illustration opens the same form with that category preselected; guests can still change it. Forms open with focus on their title so the mobile keyboard appears only when a text field is tapped. A swipe starting inside a modal does not dismiss it when the finger ends outside.
 
-Original artwork is served without resizing or quality changes. Menu illustrations and footer decorations use lazy loading, with asynchronous image decoding. Unused static and italic font variants remain in the repository but are excluded from Hosting uploads.
+Original artwork is served without resizing or quality changes. Menu illustrations and footer decorations use lazy loading, with asynchronous image decoding. Unused static and italic font variants, along with twelve unused illustrations and decorations, remain in the repository but are excluded from Hosting uploads. Their exact paths are listed in `firebase.json` under `hosting.ignore`; remove the corresponding ignore entry before reusing one of those assets in the UI.
 
 ## Mobile connections and caching
 

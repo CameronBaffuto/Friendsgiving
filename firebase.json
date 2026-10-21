@@ -9,7 +9,19 @@
       "**/.*",
       "**/node_modules/**",
       "fonts/**/static/**",
-      "fonts/**/*Italic*.ttf"
+      "fonts/**/*Italic*.ttf",
+      "assets/illustrations/blue-bow.png",
+      "assets/illustrations/cranberry-sprig.png",
+      "assets/illustrations/greenery.png",
+      "assets/illustrations/holly.png",
+      "assets/illustrations/orange-slice.png",
+      "assets/illustrations/red-bow.png",
+      "assets/illustrations/white-flower.png",
+      "assets/decorations/paper-tape.png",
+      "assets/decorations/sparkles.png",
+      "assets/decorations/star-large.png",
+      "assets/decorations/star-medium.png",
+      "assets/decorations/star-small.png"
     ],
     "rewrites": [
       {
