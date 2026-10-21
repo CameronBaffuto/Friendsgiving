@@ -5,17 +5,18 @@ import type { Store } from '../data';
 import { Sheet } from './Sheet';
 import { categoryArt, Illustration } from './Illustration';
 const normalize = (value: string) => value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
-export function DishForm({ store, dish, dishes, connected, onClose, onSaved, onLatest }: {
+export function DishForm({ store, dish, dishes, initialCategory, connected, onClose, onSaved, onLatest }: {
     store: Store;
     dish?: Dish;
     dishes: Dish[];
+    initialCategory?: Category;
     connected: boolean;
     onClose: () => void;
     onSaved: (dish: Dish, editing: boolean) => void;
     onLatest: (id: string) => void;
 }) {
     const [id] = useState(() => dish?.id ?? crypto.randomUUID());
-    const [input, setInput] = useState(() => ({ name: dish?.name ?? rememberName(), dish: dish?.dish ?? '', category: dish?.category ?? '' as Category | '', note: dish?.note ?? '' }));
+    const [input, setInput] = useState(() => ({ name: dish?.name ?? rememberName(), dish: dish?.dish ?? '', category: (dish?.category ?? initialCategory ?? '') as Category | '', note: dish?.note ?? '' }));
     const [busy, setBusy] = useState(false);
     const [slow, setSlow] = useState(false);
     const [error, setError] = useState('');
@@ -39,7 +40,7 @@ export function DishForm({ store, dish, dishes, connected, onClose, onSaved, onL
         }
         if (!input.category) {
             setError('Choose a category for your dish.');
-            document.getElementById('category-mains')?.focus();
+            document.getElementById(`category-${categories[0][0]}`)?.focus();
             return;
         }
         const cleaned: DishInput = { ...input, category: input.category, name: input.name.trim(), dish: input.dish.trim(), note: input.note.trim() };
@@ -67,10 +68,10 @@ export function DishForm({ store, dish, dishes, connected, onClose, onSaved, onL
         }
     }
     return <Sheet titleId="form-heading" busy={busy} onClose={onClose}>
-    <header className="sheet-heading"><Illustration name="rosemary"/><h2 id="form-heading">{dish ? 'Edit your dish' : 'Add your dish'}</h2><p>Tell us what you’re bringing</p></header>
+    <header className="sheet-heading"><Illustration name="rosemary"/><h2 id="form-heading" tabIndex={-1}>{dish ? 'Edit your dish' : 'Add your dish'}</h2><p>Tell us what you’re bringing</p></header>
     <form onSubmit={event => { event.preventDefault(); void commit(); }}>
       <div className="form-content"><fieldset className="input-fields" disabled={busy}>
-        <label htmlFor="guest-name">Your name</label><input id="guest-name" autoFocus name="name" autoComplete="given-name" required maxLength={60} value={input.name} onChange={e => field('name', e.target.value)} placeholder="e.g. Alex"/>
+        <label htmlFor="guest-name">Your name</label><input id="guest-name" name="name" autoComplete="given-name" required maxLength={60} value={input.name} onChange={e => field('name', e.target.value)} placeholder="e.g. Alex"/>
         <label htmlFor="dish-name">What are you bringing?</label><input id="dish-name" name="dish" required maxLength={100} value={input.dish} onChange={e => field('dish', e.target.value)} placeholder="e.g. Sweet potato casserole"/>
         <fieldset className="category-fieldset"><legend>Category <span className="sr-only">(required)</span></legend><div className="category-options">{categories.map(([value, label]) => <label className={`category-option ${input.category === value ? 'selected' : ''}`} key={value}>
           <input id={`category-${value}`} type="radio" name="category" value={value} checked={input.category === value} onChange={() => field('category', value)} required/><Illustration name={categoryArt[value]}/><span>{label}</span>

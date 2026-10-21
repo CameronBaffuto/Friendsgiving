@@ -262,6 +262,22 @@ img {
   align-items:start;
 }
 
+.category-illustration {
+  display:block;
+  width:100%;
+  min-height:104px;
+  border:0;
+  padding:0;
+  background:transparent;
+  border-radius:12px;
+  align-self:start;
+  text-align:left;
+}
+
+.category-illustration:hover {
+  background:#D8E5F333;
+}
+
 .category-art {
   width:100%;
   height:98px;

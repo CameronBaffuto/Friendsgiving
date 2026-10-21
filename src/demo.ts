@@ -4,14 +4,16 @@ import type { Dish } from './model';
 // Explicit development sandbox. This key never contains the live event menu.
 const key = 'friendsgivingmas:demo:v3';
 export function demoStore(): Store {
-    function read(): Dish[] {
+    function read(fallback: Dish[] = []): Dish[] {
         try {
-            const value: unknown = JSON.parse(localStorage.getItem(key) ?? 'null');
+            const stored = localStorage.getItem(key);
+            if (stored === null) return [];
+            const value: unknown = JSON.parse(stored);
             if (Array.isArray(value) && value.every(d => typeof d === 'object' && d && !validateInput(d) && typeof d.id === 'string' && typeof d.revision === 'string' && typeof d.createdAt === 'number'))
                 return value;
         }
         catch { /* Storage may be unavailable. */ }
-        return [];
+        return fallback;
     }
     let dishes = read();
     const listeners = new Set<(dishes: Dish[]) => void>();
@@ -32,11 +34,11 @@ export function demoStore(): Store {
             window.removeEventListener('storage', sync); }; },
         connection(receive) { receive(true); return () => { }; },
         async save(id, input, previous) {
-            dishes = read();
+            dishes = read(dishes);
             if (previous)
                 check(previous);
             persist([...dishes.filter(dish => dish.id !== id), { ...input, id, createdAt: previous?.createdAt ?? Date.now(), updatedAt: Date.now(), revision: crypto.randomUUID() }]);
         },
-        async remove(dish) { dishes = read(); check(dish); persist(dishes.filter(item => item.id !== dish.id)); },
+        async remove(dish) { dishes = read(dishes); check(dish); persist(dishes.filter(item => item.id !== dish.id)); },
     };
 }

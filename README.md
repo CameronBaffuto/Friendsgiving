@@ -84,6 +84,12 @@ The included **Deploy hosting** workflow is manually triggered from GitHub Actio
 
 The workflow deploys **Hosting only**. Deploy rules once before inviting guests, and again whenever `database.rules.json` changes using `npx firebase deploy --only database`. For this annual app, manual deployment is also fine; GitHub can simply keep the source and run CI.
 
+## Mobile signup experience
+
+The main “Add a little something” button opens an empty category selection. Tapping a category illustration opens the same form with that category preselected; guests can still change it. Forms open with focus on their title so the mobile keyboard appears only when a text field is tapped. A swipe starting inside a modal does not dismiss it when the finger ends outside.
+
+Original artwork is served without resizing or quality changes. Menu illustrations and footer decorations use lazy loading, with asynchronous image decoding. Unused static and italic font variants remain in the repository but are excluded from Hosting uploads.
+
 ## Mobile connections and caching
 
 Firebase normally connects over WebSockets and can fall back to long polling after a connection failure. Hosting's Content Security Policy allows Firebase's `/.lp` script and frame endpoints so that this fallback keeps working on mobile. Keep those endpoints in `script-src` and `frame-src`; allowing only `connect-src` blocks the fallback. This does not change event access or database validation rules.
@@ -117,7 +123,7 @@ npm run build
 npm run dev
 ```
 
-Open `http://localhost:5173/?demo`. At 375px, 390px, and desktop widths, inspect the hero and all five menu categories. Add a dish with a deliberate category selection, open its details, edit it, and cancel then confirm removal. Check the success sheet, remembered name, and a duplicate-name warning. Reload to check demo persistence and open a second tab to check demo updates and revision conflicts. Use Tab, Shift+Tab, Escape, and the close button in each sheet. Test a short viewport and mobile keyboard with the save action visible.
+Open `http://localhost:5173/?demo`. At 375px, 390px, and desktop widths, inspect the hero and all five menu categories. Add a dish with a deliberate category selection, open its details, edit it, and cancel then confirm removal. Check the success sheet, remembered name, and a duplicate-name warning. Tap each category illustration and confirm the form preselects that category, allows changing it, and does not open the keyboard until a field is tapped. The main button should still require a deliberate category selection. Reload to check demo persistence and open a second tab to check demo updates and revision conflicts. Use Tab, Shift+Tab, Escape, and the close button in each sheet. Test a short viewport and mobile keyboard with the save action visible.
 
 For live verification, copy `.env.example` to `.env.local` and supply the remaining Firebase web app API key and app ID. The project ID and database URL are prefilled for `friendsgiving-dac7b`. Open an enabled `#event=TOKEN` invitation in two browsers; verify add, edit, delete, reload persistence, concurrent edits, and offline/failed-save input retention. Demo behavior does not verify Firebase connectivity or rules.
 
