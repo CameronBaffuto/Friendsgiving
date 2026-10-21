@@ -84,6 +84,12 @@ The included **Deploy hosting** workflow is manually triggered from GitHub Actio
 
 The workflow deploys **Hosting only**. Deploy rules once before inviting guests, and again whenever `database.rules.json` changes using `npx firebase deploy --only database`. For this annual app, manual deployment is also fine; GitHub can simply keep the source and run CI.
 
+## Mobile connections and caching
+
+Firebase normally connects over WebSockets and can fall back to long polling after a connection failure. Hosting's Content Security Policy allows Firebase's `/.lp` script and frame endpoints so that this fallback keeps working on mobile. Keep those endpoints in `script-src` and `frame-src`; allowing only `connect-src` blocks the fallback. This does not change event access or database validation rules.
+
+HTML routes revalidate on every visit, including `/`. Assets also revalidate because illustration filenames can stay the same when artwork changes. The initial menu load offers a retry after ten seconds without a response. When checking a newly deployed fix on a device that cached older HTML, open the full invitation with a fresh query before its fragment (for example `/?refresh=mobile#event=TOKEN`). Keep the event token unchanged.
+
 ## Access model
 
 - The link has a cryptographically random 192-bit token in its URL fragment (`#event=…`). The fragment isn't sent to Firebase Hosting in the page request. It is used by the client when requesting the corresponding database path.

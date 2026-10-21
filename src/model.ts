@@ -1,5 +1,5 @@
 export const categories = [
-  ['mains', 'Mains'], ['sides', 'Sides'], ['appetizers', 'Appetizers'],
+  ['appetizers', 'Appetizers'], ['mains', 'Mains'], ['sides', 'Sides'],
   ['desserts', 'Desserts'], ['drinks', 'Drinks & extras'],
 ] as const;
 

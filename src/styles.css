@@ -969,3 +969,7 @@ img {
 .sheet {
   isolation:isolate;
 }
+
+.loading-retry {
+  margin-top:16px;
+}
