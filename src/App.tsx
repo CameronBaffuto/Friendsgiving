@@ -18,10 +18,9 @@ type Surface = {
     kind: 'success';
     dish: Dish;
 } | null;
-export function App({ store, issue, demo }: {
+export function App({ store, issue }: {
     store: Store | null;
     issue: string;
-    demo: boolean;
 }) {
     const [dishes, setDishes] = useState<Dish[]>([]);
     const [loaded, setLoaded] = useState(false);
@@ -58,7 +57,7 @@ export function App({ store, issue, demo }: {
     </header>
     <div className="gingham" aria-hidden="true"/>
     <section className="feast" aria-labelledby="feast-heading"><div className="feast-heading"><h2 id="feast-heading">The Feast</h2><span className="dish-total">{loaded ? `${dishes.length} ${dishes.length === 1 ? 'dish' : 'dishes'}` : 'a place for everyone'}</span></div>
-      {!store || failed ? <div className="page-message" role="alert"><h3>{failed ? 'The menu needs a moment' : 'You’re invited to the feast'}</h3><p>{failed ? 'We couldn’t open this menu. Check your connection and the full invitation link, then try again.' : issue}</p>{failed ? <button className="secondary-button" onClick={() => location.reload()}>Try again</button> : import.meta.env.DEV ? <a className="secondary-button" href="/?demo">Preview the menu</a> : null}</div> : !loaded ? <div className="loading-copy"><p role="status">{loadingSlow ? 'The menu is taking longer than expected to connect. Check your connection, then try again.' : 'Setting the table. Getting everyone’s dishes…'}</p>{loadingSlow ? <button className="secondary-button loading-retry" onClick={() => location.reload()}>Try again</button> : null}</div> : <><FoodList dishes={dishes} onOpen={dish => setSurface({ kind: 'details', dish })}/><p className={`connection ${connected ? '' : 'offline'}`} role="status">{connected ? demo ? '' : 'The menu updates live' : 'Offline · showing the last update. Reconnect to save.'}</p></>}
+      {!store || failed ? <div className="page-message" role="alert"><h3>{failed ? 'The menu needs a moment' : 'You’re invited to the feast'}</h3><p>{failed ? 'We couldn’t open this menu. Check your connection and the full invitation link, then try again.' : issue}</p>{failed ? <button className="secondary-button" onClick={() => location.reload()}>Try again</button> : import.meta.env.DEV ? <a className="secondary-button" href="/?demo">Preview the menu</a> : null}</div> : !loaded ? <div className="loading-copy"><p role="status">{loadingSlow ? 'The menu is taking longer than expected to connect. Check your connection, then try again.' : 'Setting the table. Getting everyone’s dishes…'}</p>{loadingSlow ? <button className="secondary-button loading-retry" onClick={() => location.reload()}>Try again</button> : null}</div> : <><FoodList dishes={dishes} onOpen={dish => setSurface({ kind: 'details', dish })}/>{!connected ? <p className="connection offline" role="status">Offline · showing the last update. Reconnect to save.</p> : null}</>}
     </section>
     <footer className="closing"><img src="/assets/decorations/leaf-divider.png" alt=""/><p>There’s always room at our table.</p><span>Made with love 2026</span></footer>
     <div className={`toast ${notice ? 'visible' : ''}`} role="status" aria-live="polite">{notice}</div>

@@ -15,5 +15,5 @@ else if (token) {
   try { store = firebaseStore(token); } catch { /* Invalid project configuration remains unavailable. */ }
   if (!store) issue = 'The host is still getting the food list ready. Please check back soon.';
 }
-root.render(<App store={store} issue={issue} demo={demo} />);
+root.render(<App store={store} issue={issue} />);
 window.addEventListener('hashchange', () => location.reload());
