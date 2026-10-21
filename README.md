@@ -96,6 +96,14 @@ Firebase normally connects over WebSockets and can fall back to long polling aft
 
 HTML routes revalidate on every visit, including `/`. Assets also revalidate because illustration filenames can stay the same when artwork changes. The initial menu load offers a retry after ten seconds without a response. When checking a newly deployed fix on a device that cached older HTML, open the full invitation with a fresh query before its fragment (for example `/?refresh=mobile#event=TOKEN`). Keep the event token unchanged.
 
+## Basic visitor analytics
+
+The live Firebase Hosting domains use Google Analytics stream `G-ZYHYW12T59` for standard visitor, session, page-view, and device reports. Analytics shares the existing Firebase app and loads separately from the menu. Local development and Hosting preview domains do not collect analytics. If you add a custom domain, add its hostname to the analytics allowlist in `src/main.tsx`.
+
+The initial Analytics configuration strips query strings and the invitation fragment from page URLs and referrers. No custom dish events, guest names, notes, or user IDs are sent by this app. Google signals and ad personalization signals are disabled. Keep Enhanced Measurement's browser-history page changes disabled for this single-page invitation so it does not override the sanitized page URL; the existing hash-change handler reloads the page instead. For the simplest reporting, disable the other Enhanced Measurement options as well; basic page views, sessions, and user counts still work.
+
+The measurement ID is public and associated only with the configured Friendsgiving web app ID in `src/firebase.ts`; no additional deployment secret or variable is required. Deploy Hosting after merging, then open the invitation and check Google Analytics **Reports → Realtime**. Standard reports take longer to populate, and blockers or consent settings can reduce visitor counts. Verify the first collection request contains a page URL without `#event=` before sharing the link.
+
 ## Access model
 
 - The link has a cryptographically random 192-bit token in its URL fragment (`#event=…`). The fragment isn't sent to Firebase Hosting in the page request. It is used by the client when requesting the corresponding database path.
@@ -131,4 +139,4 @@ To run the UI against a local emulator, use Firebase project `demo-friendsgiving
 
 ## Scope
 
-No RSVP, event-detail page, login, guest directory, messaging, analytics, uploads, or event-management dashboard. Only a shared food list.
+No RSVP, event-detail page, login, guest directory, messaging, uploads, or event-management dashboard. Only a shared food list.
